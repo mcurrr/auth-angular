@@ -1,1 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import '~@angular/material/theming';
+@import './custom-theme.scss';
+
+@include mat-core();
+
+/* DARK THEME */
+$dark-primary: mat-palette($mat-brown);
+$dark-accent: mat-palette($mat-teal, A200, A100, A400);
+$dark-warn: mat-palette($mat-orange, A200, A100, A400);
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+.dark-theme {
+  @include angular-material-theme($dark-theme);
+  @include custom-components-theme($dark-theme);
+}
+
+@include angular-material-theme($dark-theme);
+@include custom-components-theme($dark-theme);
+
+
+/* LIGHT THEME */
+$light-primary: mat-palette($mat-teal);
+$light-accent: mat-palette($mat-green, A200, A100, A400);
+$light-warn: mat-palette($mat-red, A200, A100, A400);
+$light-theme: mat-light-theme($light-primary, $light-accent, $light-warn);
+
+.light-theme {
+  @include angular-material-theme($light-theme);
+  @include custom-components-theme($light-theme);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}

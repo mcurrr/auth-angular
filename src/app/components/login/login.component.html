@@ -1,0 +1,56 @@
+<form [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()">
+  <!-- NAME -->
+  <mat-form-field appearance="outline">
+    <input matInput
+           placeholder="name"
+           formControlName="name"
+           required>
+    <mat-label align="end">name</mat-label>
+
+    <!-- icon -->
+    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+
+    <!-- hint -->
+    <mat-hint align="end">4 characters min</mat-hint>
+
+    <!-- errors -->
+    <mat-error *ngIf="name.errors && name.errors.required">
+      required
+    </mat-error>
+    <mat-error *ngIf="name.errors && name.errors.minlength">
+      4 characters min
+    </mat-error>
+  </mat-form-field>
+
+  <!-- PASSWORD -->
+  <mat-form-field appearance="outline">
+    <input matInput
+           placeholder="password"
+           formControlName="password"
+           [type]="!hide ? 'password' : 'text'"
+           required>
+    <mat-label align="end"
+               class="icon">password</mat-label>
+
+    <!-- icon -->
+    <mat-icon matSuffix
+              (click)="hide = !hide"
+              class="custom--icon">{{!hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+
+    <!-- hint -->
+    <mat-hint align="end">must be strong</mat-hint>
+
+    <!-- errors -->
+    <mat-error *ngIf="password.errors && password.errors.minlength">
+      6 characters min
+    </mat-error>
+    <mat-error *ngIf="password.errors && password.errors.required">
+      required
+    </mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button
+          color="primary"
+          [disabled]="loginForm.invalid">submit</button>
+</form>

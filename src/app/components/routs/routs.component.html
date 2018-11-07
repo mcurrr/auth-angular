@@ -1,0 +1,8 @@
+<nav>
+  <a *ngFor='let route of routs'
+     mat-raised-button
+     routerLinkActive="mat-primary"
+     routerLink="/{{route.link}}">
+    {{route.title | uppercase}}
+  </a>
+</nav>
