@@ -16,7 +16,7 @@ export class MessagesComponent implements OnInit {
             this.snackBar.open(message, 'ok', {
                 duration: 3000,
                 verticalPosition: 'bottom',
-                horizontalPosition: 'start',
+                horizontalPosition: 'end',
             })
         );
     }
