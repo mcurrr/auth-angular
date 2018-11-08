@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import {
+    FormGroup,
+    FormBuilder,
+    Validators,
+    AbstractControl,
+} from '@angular/forms';
 
+import { ApiClientService } from 'services/api-client.service';
+import { ApiUrlNames } from 'types';
 @Component({
     selector: 'app-registration',
     templateUrl: './registration.component.html',
@@ -8,8 +15,13 @@ import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/fo
 })
 export class RegistrationComponent implements OnInit {
     registrationForm: FormGroup;
+    success: boolean;
+    error: string | null;
 
-    constructor(private fb: FormBuilder) {}
+    constructor(private fb: FormBuilder, private api: ApiClientService) {
+        this.success = false;
+        this.error = null;
+    }
 
     matchPassword(AC: AbstractControl) {
         const password = AC.get('password').value;
@@ -34,8 +46,6 @@ export class RegistrationComponent implements OnInit {
                 validator: this.matchPassword, // your validation method
             }
         );
-
-        // this.registrationForm.valueChanges.subscribe(console.warn);
     }
 
     get name() {
@@ -55,6 +65,10 @@ export class RegistrationComponent implements OnInit {
     }
 
     onSubmit() {
-        console.warn(this.registrationForm.value);
+        this.api.getData(ApiUrlNames.REGISTRATION, {} as any).subscribe(res => {
+            console.warn(res);
+            this.success = res.ok;
+            this.error = !res.ok && res.statusText;
+        });
     }
 }
