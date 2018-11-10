@@ -13,6 +13,7 @@ import { LoaderComponent } from 'components/loader/loader.component';
 import { LoginComponent } from 'components/login/login.component';
 import { RegistrationComponent } from 'components/registration/registration.component';
 import { ThemeToggleComponent } from 'components/theme-toggle/theme-toggle.component';
+import { AuthModalComponent } from './components/auth-modal/auth-modal.component';
 
 @NgModule({
     declarations: [
@@ -23,7 +24,9 @@ import { ThemeToggleComponent } from 'components/theme-toggle/theme-toggle.compo
         LoginComponent,
         RegistrationComponent,
         ThemeToggleComponent,
+        AuthModalComponent,
     ],
+    entryComponents: [AuthModalComponent],
     imports: [
         BrowserModule,
         FormsModule,

@@ -1,0 +1,23 @@
+<section>
+  <h1 mat-dialog-title>{{data.title}}</h1>
+  <div mat-dialog-content>
+    <p *ngIf="data.message">{{data.message}}</p>
+  </div>
+  <mat-expansion-panel *ngIf="data.details">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Details
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>{{data.details}}</p>
+  </mat-expansion-panel>
+  <div mat-dialog-actions>
+    <button mat-button
+            (click)="onNoClick()">No Thanks</button>
+    <a *ngFor="let button of data.buttons"
+       mat-button
+       routerLink="{{button.link}}"
+       (click)="onNoClick()"
+       cdkFocusInitial>{{button.title}}</a>
+  </div>
+</section>

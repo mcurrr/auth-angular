@@ -14,3 +14,20 @@ export enum ApiUrlNames {
 }
 
 export type ApiUrl = ApiUrlNames.LOGIN | ApiUrlNames.REGISTRATION;
+
+export interface AuthDialogData {
+    success: boolean;
+    error: boolean;
+}
+
+export interface ModalData {
+    title: string;
+    message?: string;
+    details?: string;
+    buttons?: LinkedButton[];
+}
+
+interface LinkedButton {
+    link: RouteLinks;
+    title: string;
+}
