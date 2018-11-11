@@ -12,9 +12,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
     imports: [
+        MatProgressSpinnerModule,
         MatExpansionModule,
         MatDialogModule,
         MatCardModule,
@@ -29,6 +31,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
         MatSlideToggleModule,
     ],
     exports: [
+        MatProgressSpinnerModule,
         MatExpansionModule,
         MatDialogModule,
         MatCardModule,

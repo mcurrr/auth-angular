@@ -1,6 +1,7 @@
-<form *ngIf="!error"
-      [formGroup]="registrationForm"
-      (ngSubmit)="onSubmit()">
+<form [formGroup]="registrationForm"
+      (ngSubmit)="onSubmit()"
+      [class]="fetching && 'fetching'">
+  <app-loader *ngIf="fetching"></app-loader>
   <!-- NAME -->
   <mat-form-field appearance="outline">
     <input matInput
@@ -102,38 +103,11 @@
   <button class="register-submit"
           mat-raised-button
           color="primary"
-          [disabled]="registrationForm.invalid">submit</button>
-
-
-  <!-- hint -->
-  <mat-chip-list>
-    <mat-chip selected
-              class="login-redirect"
-              color="accent">already signed in?</mat-chip>
-  </mat-chip-list>
-  <!-- <a routerLink="/{{route.link}}">Log in</a> -->
+          [disabled]="registrationForm.invalid || fetching">submit</button>
 </form>
 
-<mat-card *ngIf="error || success"
-          class="example-card">
-  <mat-card-header>
-    <div mat-card-avatar
-         class="example-header-image"></div>
-    <mat-card-title>Shiba Inu</mat-card-title>
-    <mat-card-subtitle>Dog Breed</mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image
-       src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-       alt="Photo of a Shiba Inu">
-  <mat-card-content>
-    <p>
-      The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-      A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-      bred for hunting.
-    </p>
-  </mat-card-content>
-  <mat-card-actions>
-    <button mat-button>LIKE</button>
-    <button mat-button>SHARE</button>
-  </mat-card-actions>
-</mat-card>
+<mat-chip-list>
+  <mat-chip routerLink="/{{loginLink}}"
+            class="login-redirect"
+            color="accent">already signed in?</mat-chip>
+</mat-chip-list>

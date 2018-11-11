@@ -1,5 +1,7 @@
 <form [formGroup]="loginForm"
-      (ngSubmit)="onSubmit()">
+      (ngSubmit)="onSubmit()"
+      [class]="fetching && 'fetching'">
+  <app-loader *ngIf="fetching"></app-loader>
   <!-- NAME -->
   <mat-form-field appearance="outline">
     <input matInput
@@ -52,5 +54,5 @@
 
   <button mat-raised-button
           color="primary"
-          [disabled]="loginForm.invalid">submit</button>
+          [disabled]="loginForm.invalid || fetching">submit</button>
 </form>

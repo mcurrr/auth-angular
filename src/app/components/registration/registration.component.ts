@@ -6,10 +6,12 @@ import {
     AbstractControl,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import { delay, tap } from 'rxjs/operators';
 
 import { ApiClientService } from 'services/api-client.service';
-import { ApiUrlNames } from 'types';
+import { ApiUrlNames, RouteLinks, ModalData } from 'types';
 import { AuthModalComponent } from 'components/auth-modal/auth-modal.component';
+import { MESSAGES } from 'custom-constants';
 
 @Component({
     selector: 'app-registration',
@@ -20,7 +22,11 @@ export class RegistrationComponent implements OnInit {
     registrationForm: FormGroup;
     success: boolean;
     error: boolean;
-    errorText: string;
+    message: string;
+    details: string;
+    fetching: boolean;
+    loginLink: RouteLinks;
+    modalData: ModalData;
 
     constructor(
         private fb: FormBuilder,
@@ -29,7 +35,15 @@ export class RegistrationComponent implements OnInit {
     ) {
         this.success = false;
         this.error = false;
-        this.errorText = '';
+        this.message = '';
+        this.fetching = false;
+        this.loginLink = RouteLinks.LOG_IN;
+        this.modalData = {
+            message: '',
+            title: '',
+            details: '',
+            buttons: [{ link: RouteLinks.LOG_IN, title: 'Log in' }],
+        };
     }
 
     matchPassword(AC: AbstractControl) {
@@ -74,20 +88,48 @@ export class RegistrationComponent implements OnInit {
     }
 
     onSubmit() {
-        this.api.getData(ApiUrlNames.REGISTRATION, {} as any).subscribe(res => {
-            [this.success, this.error] = res.ok ? [true, false] : [false, true];
-            this.errorText = res.statusText || '';
-        });
+        this.api
+            .getData(ApiUrlNames.REGISTRATION, {} as any)
+            .pipe(
+                tap(() => {
+                    this.fetching = true;
+                })
+            )
+            .pipe(delay(2000))
+            .subscribe(res => {
+                [this.success, this.error] = res.ok
+                    ? [true, false]
+                    : [false, true];
+                this.message = res.statusText || '';
+                // this.details = !res.ok ? res.message : '';
+                this.fetching = false;
+                this.openDialog();
+            });
+    }
+
+    getCurrentData() {
+        return {
+            ...this.modalData,
+            title: this.error
+                ? MESSAGES.errors.login.title
+                : MESSAGES.success.login.title,
+            message: this.error
+                ? MESSAGES.errors.login.message
+                : MESSAGES.success.login.message,
+            buttons: this.error
+                ? [{ link: RouteLinks.LOG_IN, title: 'Log in' }]
+                : [{ link: RouteLinks.LOG_IN, title: 'Home' }],
+            details: this.details,
+        };
     }
 
     openDialog(): void {
+        const data = this.getCurrentData();
+
+        console.warn(data);
+
         const dialogRef = this.dialog.open(AuthModalComponent, {
-            width: '500px',
-            data: {
-                success: this.success,
-                error: this.error,
-                errorText: this.errorText,
-            },
+            data,
         });
 
         dialogRef.afterClosed().subscribe(result => {

@@ -2,6 +2,13 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  // position: relative;
+
+  &.fetching {
+    .mat-form-field {
+      opacity: 0.25;
+    }
+  }
 }
 
 .mat-form-field {

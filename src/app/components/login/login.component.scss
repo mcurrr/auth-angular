@@ -1,14 +1,21 @@
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // position: relative;
+
+  &.fetching {
+    .mat-form-field {
+      opacity: 0.25;
+    }
+  }
 }
 
 .mat-form-field {
-    display: block;
-    min-width: 300px;
+  display: block;
+  min-width: 300px;
 }
 
 .custom--icon {
-    cursor: pointer;
+  cursor: pointer;
 }

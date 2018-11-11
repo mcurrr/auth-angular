@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
+import { delay, tap } from 'rxjs/operators';
 
 import { ApiClientService } from 'services/api-client.service';
 import { ApiUrlNames, RouteLinks, ModalData } from 'types';
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
     error: boolean;
     message: string;
     details: string;
+    fetching: boolean;
     modalData: ModalData;
 
     constructor(
@@ -28,6 +30,7 @@ export class LoginComponent implements OnInit {
         this.success = false;
         this.error = false;
         this.message = '';
+        this.fetching = false;
         this.modalData = {
             message: '',
             title: '',
@@ -52,17 +55,27 @@ export class LoginComponent implements OnInit {
     }
 
     onSubmit() {
-        this.api.getData(ApiUrlNames.LOGIN, {} as any).subscribe(res => {
-            [this.success, this.error] = res.ok ? [true, false] : [false, true];
-            this.message = res.statusText || '';
-            // this.details = !res.ok ? res.message : '';
-            console.warn(res);
-            this.openDialog();
-        });
+        this.api
+            .getData(ApiUrlNames.LOGIN, {} as any)
+            .pipe(
+                tap(() => {
+                    this.fetching = true;
+                })
+            )
+            .pipe(delay(2000))
+            .subscribe(res => {
+                [this.success, this.error] = res.ok
+                    ? [true, false]
+                    : [false, true];
+                this.message = res.statusText || '';
+                // this.details = !res.ok ? res.message : '';
+                this.fetching = false;
+                this.openDialog();
+            });
     }
 
-    openDialog(): void {
-        const data = {
+    getCurrentData() {
+        return {
             ...this.modalData,
             title: this.error
                 ? MESSAGES.errors.login.title
@@ -75,6 +88,10 @@ export class LoginComponent implements OnInit {
                 : [{ link: RouteLinks.REGISTRATION, title: 'Home' }],
             details: this.details,
         };
+    }
+
+    openDialog(): void {
+        const data = this.getCurrentData();
 
         console.warn(data);
 
@@ -85,9 +102,5 @@ export class LoginComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
         });
-    }
-
-    onRegistrationRedirect() {
-        console.warn('redirect to registration');
     }
 }
